@@ -1,0 +1,108 @@
+syntax = "proto3";
+
+package auth;
+
+service AuthService {
+  rpc Register(RegisterRequest) returns (AuthResponse);
+  rpc Login(LoginRequest) returns (AuthResponse);
+  rpc ValidateToken(ValidateTokenRequest) returns (ValidateTokenResponse);
+  rpc RefreshToken(RefreshTokenRequest) returns (AuthResponse);
+  rpc GetUserById(GetUserRequest) returns (UserResponse);
+  rpc UpdateUser(UpdateUserRequest) returns (UserResponse);
+  rpc GetAllUsers(GetAllUsersRequest) returns (GetAllUsersResponse);
+  rpc DeleteUser(DeleteUserRequest) returns (DeleteUserResponse);
+}
+
+message RegisterRequest {
+  string email = 1;
+  string password = 2;
+  string name = 3;
+  string role = 4;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message ValidateTokenRequest {
+  string token = 1;
+}
+
+message RefreshTokenRequest {
+  string refreshToken = 1;
+}
+
+message GetUserRequest {
+  string userId = 1;
+}
+
+message UpdateUserRequest {
+  string userId = 1;
+  string name = 2;
+  string role = 3;
+  bool isActive = 4;
+  bool accessAllowed = 5;
+  string upstoxAccessToken = 6;
+  string upstoxRefreshToken = 7;
+}
+
+message GetAllUsersRequest {
+  int32 page = 1;
+  int32 limit = 2;
+  string role = 3;
+  bool isActive = 4;
+}
+
+message DeleteUserRequest {
+  string userId = 1;
+}
+
+message AuthResponse {
+  bool success = 1;
+  string message = 2;
+  string accessToken = 3;
+  string refreshToken = 4;
+  User user = 5;
+}
+
+message ValidateTokenResponse {
+  bool valid = 1;
+  string userId = 2;
+  string email = 3;
+  string role = 4;
+  string message = 5;
+}
+
+message UserResponse {
+  bool success = 1;
+  string message = 2;
+  User user = 3;
+}
+
+message GetAllUsersResponse {
+  bool success = 1;
+  string message = 2;
+  repeated User users = 3;
+  int32 total = 4;
+  int32 page = 5;
+  int32 totalPages = 6;
+}
+
+message DeleteUserResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message User {
+  string id = 1;
+  string email = 2;
+  string name = 3;
+  string role = 4;
+  bool isActive = 5;
+  bool accessAllowed = 6;
+  string upstoxAccessToken = 7;
+  string upstoxRefreshToken = 8;
+  string createdAt = 9;
+  string updatedAt = 10;
+}

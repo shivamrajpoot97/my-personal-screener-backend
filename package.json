@@ -1,0 +1,27 @@
+{
+  "name": "screener-backend",
+  "version": "1.0.0",
+  "description": "Personal Screener Backend - Microservices Architecture",
+  "license": "ISC",
+  "author": "Shivam Rajpoot",
+  "type": "commonjs",
+  "workspaces": [
+    "gateway",
+    "services/auth"
+  ],
+  "scripts": {
+    "setup": "chmod +x scripts/setup.sh && ./scripts/setup.sh",
+    "dev": "chmod +x scripts/dev.sh && ./scripts/dev.sh",
+    "dev:gateway": "cd gateway && npm run dev",
+    "dev:auth": "cd services/auth && npm run dev",
+    "build": "chmod +x scripts/build.sh && ./scripts/build.sh",
+    "start:auth": "cd services/auth && npm start",
+    "start:gateway": "cd gateway && npm start",
+    "install:all": "npm install && npm install --workspaces",
+    "test": "npm run test --workspaces",
+    "clean": "rm -rf gateway/dist services/auth/dist gateway/logs services/auth/logs logs"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

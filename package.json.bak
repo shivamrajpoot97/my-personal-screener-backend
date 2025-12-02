@@ -1,0 +1,12 @@
+{
+  "name": "screener-backend",
+  "version": "1.0.0",
+  "description": "this is personal Screener Backend",
+  "license": "ISC",
+  "author": "Shivam Rajpoot",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  }
+}
