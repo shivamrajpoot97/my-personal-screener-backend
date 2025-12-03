@@ -4,7 +4,7 @@ import helmet from 'helmet';
 import compression from 'compression';
 import rateLimit from 'express-rate-limit';
 import { logger } from '@shared/utils/logger';
-import { connectDB } from '@shared/database';
+import { SharedDatabase } from '@shared/database';
 import { config } from '@shared/config';
 import upstoxRoutes, { historicalSyncService } from './routes/upstoxRoutes';
 
@@ -105,7 +105,8 @@ process.on('SIGINT', async () => {
 async function startServer() {
   try {
     // Connect to database
-    await connectDB();
+    let db = SharedDatabase.getInstance();
+    await db.getConnection();
     logger.info('Connected to MongoDB');
     
     // Start scheduled sync

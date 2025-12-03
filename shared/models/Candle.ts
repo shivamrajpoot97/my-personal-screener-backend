@@ -126,7 +126,7 @@ CandleSchema.statics.parseUpstoxCandle = function(symbol: string, timeframe: str
   return {
     symbol: symbol.toUpperCase(),
     timeframe,
-    timestamp: new Date(candleArray[0]),
+    timestamp: new Date(candleArray[0]!),
     open: candleArray[1],
     high: candleArray[2],
     low: candleArray[3],
