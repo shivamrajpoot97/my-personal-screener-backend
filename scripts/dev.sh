@@ -24,7 +24,7 @@ sleep 3
 
 # Start gateway
 echo "Starting Gateway..."
-cd ../../gateway && npm run dev &
+cd ../gateway && npm run dev &
 GATEWAY_PID=$!
 
 echo "All services started!"

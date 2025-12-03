@@ -24,7 +24,7 @@ class SharedDatabase {
     }
 
     try {
-      const mongoUri = process.env.MONGODB_URI;
+      const mongoUri = process.env.MONGODB_URI || 'mongodb+srv://shivam12rajpoot_db_user:BUSBnspQCUR7fxkE@screener.opa76rk.mongodb.net/screener';
       if (!mongoUri) {
         throw new Error("MONGODB_URI is not defined in environment variables");
       }
