@@ -1,4 +1,16 @@
 // CLI interface
+const { logger } = require('../../shared/utils/logger');
+const { SharedDatabase } = require('../../shared/database');
+const {HistoricalDataPopulator} = require('./populate-historical-data-fixed');
+
+interface PopulationConfig {
+  accessToken: string;
+  batchSize: number;
+  delayBetweenBatches: number; // milliseconds
+  delayBetweenStocks: number; // milliseconds
+  //0maxRetries: number;
+}
+
 async function main() {
   try {
     // Try to get token from environment first, then command line
