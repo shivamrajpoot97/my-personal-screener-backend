@@ -211,7 +211,7 @@ const StockSchema = new Schema<IStock>({
   enableFinancialSync: {
     type: Boolean,
     default: function() {
-      return this.instrumentType === 'EQ';
+      return this && this.instrumentType === 'EQ';
     },
   },
   financialSyncPriority: {

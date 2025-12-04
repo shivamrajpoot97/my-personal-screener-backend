@@ -25,6 +25,7 @@
     "concurrently": "^8.2.2"
   },
   "dependencies": {
+    "@clickhouse/client": "^1.14.0",
     "axios": "^1.13.2",
     "dotenv": "^17.2.3",
     "mongoose": "^9.0.0",
