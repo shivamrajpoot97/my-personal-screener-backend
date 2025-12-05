@@ -70,10 +70,24 @@ class SimpleUpstoxService {
     toDate: Date
   ): Promise<number> {
     try {
+      // Check if data already exists for this stock and timeframe
+      const candleModel = new ClickHouseCandle()
+      const existingCount = await candleModel.count({
+        symbol: stock.symbol,
+        timeframe: mongoTimeframe,
+        timestampFrom: fromDate,
+        timestampTo: toDate
+      })
+      
+      if (existingCount > 0) {
+        logger.info(`⏭️  ${stock.symbol} ${mongoTimeframe}: ${existingCount} candles already exist, skipping`)
+        return 0
+      }
+      
       // define your max days per request by interval
       const apiLimits: Record<string, number> = {
         'minutes/15': 30,   // e.g. max 30 days at once
-        'hours/1': 90,   // max 90 days
+        'minutes/60': 90,   // max 90 days  
         'days/1': 365,      // max 1 year
       }
 
@@ -137,9 +151,19 @@ class SimpleUpstoxService {
         `✅ ${stock.symbol}: saved ${saved} ${mongoTimeframe} candles (before features)`
       )
 
-      // now compute & persist features (e.g. ATR, EMA, etc.)
-      await this.calculateAndSaveFeatures(stock.symbol, mongoTimeframe)
-      logger.info(`🔧 ${stock.symbol}: features updated for ${mongoTimeframe}`)
+      // now compute & persist features (e.g. ATR, EMA, etc.) - only if features don't exist
+      const featuresModel = new ClickHouseCandleFeatures()
+      const existingFeatures = await featuresModel.find({
+        symbol: stock.symbol,
+        timeframe: mongoTimeframe
+      }, { limit: 1 })
+      
+      if (existingFeatures.length === 0) {
+        await this.calculateAndSaveFeatures(stock.symbol, mongoTimeframe)
+        logger.info(`🔧 ${stock.symbol}: features calculated for ${mongoTimeframe}`)
+      } else {
+        logger.info(`⏭️  ${stock.symbol}: features already exist for ${mongoTimeframe}`)
+      }
 
       return saved
     } catch (err) {
@@ -423,9 +447,9 @@ class SimpleUpstoxService {
 
 // Timeframes to download
 const TIMEFRAMES = [
-  { interval: 'minutes/15', mongoTimeframe: '15min', days: 60 },
-  { interval: 'hours/1', mongoTimeframe: '1hour', days: 120 },
-  { interval: 'days/1',   mongoTimeframe: '1day',  days: 365 * 3 - 180 },
+  { interval: 'minutes/15', mongoTimeframe: '15min', days: 30 },      // 1 month
+  { interval: 'minutes/60', mongoTimeframe: '1hour', days: 120 },     // 4 months
+  { interval: 'days/1',     mongoTimeframe: '1day',  days: 31 * 12 * 2 + 7 * 31 },  // 2 years 7 months (31 months)
 ]
 async function populateHistoricalData() {
   try {
@@ -470,7 +494,11 @@ async function populateHistoricalData() {
       )
 
       let processed = 0
+      let skipped = 0
+      let fetched = 0
+      let failed = 0
       const batchSize = 10
+      
       for (let i = 0; i < equityStocks.length; i += batchSize) {
         const batch = equityStocks.slice(i, i + batchSize)
         const batchNum = Math.floor(i / batchSize) + 1
@@ -492,21 +520,34 @@ async function populateHistoricalData() {
               fromDate,
               toDate
             )
-            totalCandles += count
+            
+            if (count === 0) {
+              skipped++
+            } else {
+              fetched++
+              totalCandles += count
+            }
+            
             await new Promise((r) => setTimeout(r, 300))
           } catch (innerErr) {
+            failed++
             logger.error(`Error processing ${stock.symbol}:`, innerErr)
           }
         }
 
         if (i + batchSize < equityStocks.length) {
+          logger.info(`Progress: ${processed}/${equityStocks.length} | Fetched: ${fetched} | Skipped: ${skipped} | Failed: ${failed}`)
           logger.info('Waiting 2s before next batch…')
           await new Promise((r) => setTimeout(r, 2000))
         }
       }
 
       logger.info(
-        `✔️ Completed ${tf.mongoTimeframe}: ${processed} symbols processed\n`
+        `\n✔️ Completed ${tf.mongoTimeframe}:\n` +
+        `   Total Processed: ${processed}\n` +
+        `   Newly Fetched: ${fetched}\n` +
+        `   Skipped (Already Exists): ${skipped}\n` +
+        `   Failed: ${failed}\n`
       )
     }
 

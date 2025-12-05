@@ -8,6 +8,7 @@ import path from "path";
 // Import routes
 import authRoutes from "./routes/auth";
 import userRoutes from "./routes/users";
+import screenerRoutes from "./routes/screener";
 
 // Import middleware
 import { errorHandler, notFoundHandler } from "./middleware/errorHandler";
@@ -87,6 +88,7 @@ class GatewayServer {
     this.app.use("/api/auth/login", authLimiter);
     this.app.use("/api/auth", authRoutes);
     this.app.use("/api/users", userRoutes);
+    this.app.use("/api/screener", screenerRoutes);
 
     // Root endpoint
     this.app.get("/", (req, res) => {
@@ -97,7 +99,8 @@ class GatewayServer {
         endpoints: {
           health: "/health",
           auth: "/api/auth",
-          users: "/api/users"
+          users: "/api/users",
+          screener: "/api/screener"
         }
       });
     });
@@ -121,6 +124,12 @@ class GatewayServer {
             get: "GET /api/users/:id",
             update: "PUT /api/users/:id",
             delete: "DELETE /api/users/:id"
+          },
+          screener: {
+            wyckoff: "GET /api/screener/wyckoff?timeframe=1day&confidence=70&limit=100",
+            customScan: "POST /api/screener/scan",
+            filters: "GET /api/screener/filters",
+            health: "GET /api/screener/health"
           }
         }
       });

@@ -139,10 +139,12 @@ class ClickHouseCandle {
         whereClause += ` AND timeframe = '${criteria.timeframe}'`;
       }
       if (criteria.timestampFrom) {
-        whereClause += ` AND timestamp >= '${criteria.timestampFrom.toISOString()}'`;
+        const fromDate = criteria.timestampFrom.toISOString().replace('T', ' ').split('.')[0];
+        whereClause += ` AND timestamp >= '${fromDate}'`;
       }
       if (criteria.timestampTo) {
-        whereClause += ` AND timestamp <= '${criteria.timestampTo.toISOString()}'`;
+        const toDate = criteria.timestampTo.toISOString().replace('T', ' ').split('.')[0];
+        whereClause += ` AND timestamp <= '${toDate}'`;
       }
 
       let orderClause = options.orderBy || 'ORDER BY timestamp DESC';
@@ -220,10 +222,12 @@ class ClickHouseCandle {
         whereClause += ` AND timeframe = '${criteria.timeframe}'`;
       }
       if (criteria.timestampFrom) {
-        whereClause += ` AND timestamp >= '${criteria.timestampFrom.toISOString()}'`;
+        const fromDate = criteria.timestampFrom.toISOString().replace('T', ' ').split('.')[0];
+        whereClause += ` AND timestamp >= '${fromDate}'`;
       }
       if (criteria.timestampTo) {
-        whereClause += ` AND timestamp <= '${criteria.timestampTo.toISOString()}'`;
+        const toDate = criteria.timestampTo.toISOString().replace('T', ' ').split('.')[0];
+        whereClause += ` AND timestamp <= '${toDate}'`;
       }
 
       const query = `

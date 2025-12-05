@@ -12,7 +12,8 @@ import candleRoutes from './routes/candleRoutes';
 dotenv.config();
 
 const app = express();
-const PORT = process.env.CANDLE_SERVICE_PORT || 3002;
+// Default port updated to 3005
+const PORT = process.env.CANDLE_SERVICE_PORT || 3005;
 
 // Middleware
 app.use(helmet());

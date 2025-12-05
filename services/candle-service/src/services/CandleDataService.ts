@@ -418,4 +418,3 @@ export class CandleDataService {
 }
 
 export default new CandleDataService();
-</contents>

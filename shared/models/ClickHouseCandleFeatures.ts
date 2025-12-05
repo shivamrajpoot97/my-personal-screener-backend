@@ -369,5 +369,3 @@ class ClickHouseCandleFeatures {
 }
 
 export default ClickHouseCandleFeatures;
-
-export default ClickHouseCandleFeatures;

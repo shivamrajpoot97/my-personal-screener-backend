@@ -49,12 +49,12 @@ export const config = {
       url: process.env.AUTH_SERVICE_URL || "localhost:50051",
     },
     candle: {
-      port: parseInt(process.env.CANDLE_SERVICE_PORT || "3001"),
-      url: process.env.CANDLE_SERVICE_URL || "http://localhost:3001",
+      port: parseInt(process.env.CANDLE_SERVICE_PORT || "3005"),
+      url: process.env.CANDLE_SERVICE_URL || "http://localhost:3005",
     },
     upstox: {
-      port: parseInt(process.env.UPSTOX_SERVICE_PORT || "3002"),
-      url: process.env.UPSTOX_SERVICE_URL || "http://localhost:3002",
+      port: parseInt(process.env.UPSTOX_SERVICE_PORT || "3004"),
+      url: process.env.UPSTOX_SERVICE_URL || "http://localhost:3004",
     }
   },
 
@@ -76,3 +76,4 @@ export const config = {
   isProduction: () => process.env.NODE_ENV === "production",
   isTest: () => process.env.NODE_ENV === "test",
 };
+

@@ -231,4 +231,3 @@ export class CronService {
 }
 
 export default new CronService();
-</contents>

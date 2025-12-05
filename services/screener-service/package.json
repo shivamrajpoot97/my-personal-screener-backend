@@ -1,0 +1,29 @@
+{
+  "name": "screener-service",
+  "version": "1.0.0",
+  "description": "Stock Screener Service with Wyckoff Analysis",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "dev:cached": "tsx watch src/index-with-cache.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "start:cached": "node dist/index-with-cache.js"
+  },
+  "dependencies": {
+    "@types/node-cron": "^3.0.11",
+    "cors": "^2.8.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "node-cron": "^4.2.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/node": "^20.10.0",
+    "tsx": "^4.7.0",
+    "typescript": "^5.3.3"
+  }
+}
+

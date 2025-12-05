@@ -9,7 +9,8 @@ import { config } from '@shared/config';
 import upstoxRoutes, { historicalSyncService } from './routes/upstoxRoutes';
 
 const app = express();
-const PORT = process.env.UPSTOX_SERVICE_PORT || 3002;
+// Default port changed from 3002 to 3004
+const PORT = process.env.UPSTOX_SERVICE_PORT || 3004;
 
 // Security middleware
 app.use(helmet());

@@ -19,10 +19,14 @@
     "start:gateway": "cd gateway && npm start",
     "install:all": "npm install && npm install --workspaces",
     "test": "npm run test --workspaces",
-    "clean": "rm -rf gateway/dist services/auth/dist gateway/logs services/auth/logs logs"
+    "clean": "rm -rf gateway/dist services/auth/dist gateway/logs services/auth/logs logs",
+    "populate-candles": "tsx scripts/populate-candles.ts",
+    "check-candles": "tsx scripts/check-candles.ts",
+    "find-missing-stocks": "tsx scripts/find-missing-stocks.ts"
   },
   "devDependencies": {
-    "concurrently": "^8.2.2"
+    "concurrently": "^8.2.2",
+    "tsx": "^4.21.0"
   },
   "dependencies": {
     "@clickhouse/client": "^1.14.0",
@@ -33,3 +37,4 @@
     "typescript": "^5.9.3"
   }
 }
+
